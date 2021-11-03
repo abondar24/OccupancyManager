@@ -14,3 +14,8 @@ Or
 ```yaml
 ./gradlew bootRun
 ```
+Run tests
+
+```yaml
+./gradlew clean test
+```
