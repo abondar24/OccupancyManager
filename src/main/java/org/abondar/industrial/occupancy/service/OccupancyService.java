@@ -45,8 +45,14 @@ public class OccupancyService {
         var economyShortage = economyPrices.size() > economyRooms;
 
         if (premiumLeftover>0 && economyShortage){
-            //TODO: implement upgrade
-            System.out.println("here should go upgrade");
+            var upgradedEconomy = economyPrices.subList(0,premiumLeftover);
+            var upgradedUsage = calculateBasicOccupancy(upgradedEconomy,premiumLeftover);
+            premiumUsage.setPrice(premiumUsage.getPrice()+upgradedUsage.getPrice());
+            premiumUsage.setRooms(premiumUsage.getRooms()+upgradedUsage.getRooms());
+
+            var leftEconomy = economyPrices.subList(premiumLeftover,economyPrices.size()-1);
+            economyUsage = calculateBasicOccupancy(leftEconomy,economyRooms);
+
         } else {
             economyUsage = calculateBasicOccupancy(economyPrices,economyRooms);
         }

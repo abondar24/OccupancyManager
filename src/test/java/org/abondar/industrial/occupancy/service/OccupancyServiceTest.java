@@ -111,4 +111,16 @@ public class OccupancyServiceTest {
         assertEquals(4, economy.getRooms());
         assertEquals(189.99, economy.getPrice());
     }
+
+    @Test
+    public void calculateOccupancyPremiumUpgradeTest() {
+        var occupancy = occupancyService.calculateOccupancy(7, 1);
+        var premium = occupancy.getPremiumData();
+        assertEquals(7, premium.getRooms());
+        assertEquals(1153.99, premium.getPrice());
+
+        var economy = occupancy.getEconomyData();
+        assertEquals(1, economy.getRooms());
+        assertEquals(45, economy.getPrice());
+    }
 }
