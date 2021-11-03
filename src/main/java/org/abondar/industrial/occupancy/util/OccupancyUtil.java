@@ -8,6 +8,10 @@ public class OccupancyUtil {
 
     public static final String GUEST_PRICES_FILE = "guests.json";
 
+    public static final String OCCUPANCY_ENDPOINT = "/occupancy";
+
+    public static final String OCCUPANCY_ROOMS = "/{premiumRooms}/{economyRooms}";
+
     public static final String ERR_DATA_READ="Error reading guest data";
 
     public static final String ERR_PRICES_EMPTY = "Prices not present";

@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
 
+import static org.abondar.industrial.occupancy.util.OccupancyUtil.OCCUPANCY_ENDPOINT;
+import static org.abondar.industrial.occupancy.util.OccupancyUtil.OCCUPANCY_ROOMS;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
-@RequestMapping("/occupancy")
+@RequestMapping(OCCUPANCY_ENDPOINT)
 @Validated
 public class OccupancyController {
 
@@ -24,7 +28,7 @@ public class OccupancyController {
         this.service = service;
     }
 
-    @GetMapping(path="/{premiumRooms}/{economyRooms}",produces="application/json")
+    @GetMapping(path = OCCUPANCY_ROOMS, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Occupancy> showOccupancy(@PathVariable @Min(0) int premiumRooms,
                                                    @PathVariable @Min(0) int economyRooms) {
 
