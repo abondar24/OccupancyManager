@@ -1,6 +1,6 @@
 package org.abondar.industrial.occupancy.controller;
 
-import org.abondar.industrial.occupancy.data.OccupancyUsage;
+import org.abondar.industrial.occupancy.data.Occupancy;
 import org.abondar.industrial.occupancy.service.OccupancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,8 @@ public class OccupancyController {
     }
 
     @GetMapping(path="/{premiumRooms}/{economyRooms}",produces="application/json")
-    public ResponseEntity<OccupancyUsage> showOccupancy(@PathVariable @Min(0) int premiumRooms,
-                                                        @PathVariable @Min(0) int economyRooms) {
+    public ResponseEntity<Occupancy> showOccupancy(@PathVariable @Min(0) int premiumRooms,
+                                                   @PathVariable @Min(0) int economyRooms) {
 
         var occupancy = service.calculateOccupancy(premiumRooms, economyRooms);
         return ResponseEntity.ok(occupancy);

@@ -1,5 +1,6 @@
 package org.abondar.industrial.occupancy.service;
 
+import org.abondar.industrial.occupancy.data.Occupancy;
 import org.abondar.industrial.occupancy.data.OccupancyUsage;
 import org.abondar.industrial.occupancy.exception.OccupancyException;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class OccupancyService {
         this.dataService = dataService;
     }
 
-    public OccupancyUsage calculateOccupancy(int premuimRooms, int economyRooms) {
+    public Occupancy calculateOccupancy(int premiumRooms, int economyRooms) {
 
         var guestPrices = dataService.getGuestPrices();
         if (guestPrices.isEmpty()) {
@@ -37,7 +38,20 @@ public class OccupancyService {
         var premiumPrices = prices.get(0);
         var economyPrices = prices.get(1);
 
-        return new OccupancyUsage();
+        var premiumUsage = calculateBasicOccupancy(premiumPrices,premiumRooms);
+        OccupancyUsage economyUsage = null;
+
+        var premiumLeftover = premiumRooms - premiumUsage.getRooms();
+        var economyShortage = economyPrices.size() > economyRooms;
+
+        if (premiumLeftover>0 && economyShortage){
+            //TODO: implement upgrade
+            System.out.println("here should go upgrade");
+        } else {
+            economyUsage = calculateBasicOccupancy(economyPrices,economyRooms);
+        }
+
+        return new Occupancy(premiumUsage,economyUsage);
     }
 
     public List<List<Double>> splitPrices(List<Double> guestPrices) {
