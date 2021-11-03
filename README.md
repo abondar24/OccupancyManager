@@ -2,6 +2,26 @@
 
 Hotel room occupancy manager.
 
+## API
+```yaml
+http://localhost:8080/occupancy/{premiumRooms}/{economyRooms} - fetch occupancy usage calculations
+
+Response:
+  200 - occupancy usage
+  {
+    "premium": {
+      "rooms": 6,
+      "price": 1054.0
+    },
+    "economy": {
+      "rooms": 4,
+      "price": 189.99
+    }
+  }
+  400 - Invalid path params
+  502 - Error reading guests json
+
+```
 
 ## Build and Run
 
