@@ -50,7 +50,7 @@ public class OccupancyService {
             premiumUsage.setPrice(premiumUsage.getPrice()+upgradedUsage.getPrice());
             premiumUsage.setRooms(premiumUsage.getRooms()+upgradedUsage.getRooms());
 
-            var leftEconomy = economyPrices.subList(premiumLeftover,economyPrices.size()-1);
+            var leftEconomy = economyPrices.subList(premiumLeftover,economyPrices.size());
             economyUsage = calculateBasicOccupancy(leftEconomy,economyRooms);
 
         } else {
