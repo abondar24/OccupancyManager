@@ -10,3 +10,7 @@ Hotel room occupancy manager.
 
 java -jar <jar-folder>/OccupancyManager-1.0-SNAPSHOT.jar
 ```
+Or 
+```yaml
+./gradlew bootRun
+```
