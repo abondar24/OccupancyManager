@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class GuestData {
-    private List<Integer> guestPrices;
+    private List<Double> guestPrices;
 }

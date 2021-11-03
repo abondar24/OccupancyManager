@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static org.abondar.industrial.occupancy.util.OccupancyUtil.ERR_DATA_READ;
 import static org.abondar.industrial.occupancy.util.OccupancyUtil.GUEST_PRICES_FILE;
 
 @Service
@@ -19,7 +20,7 @@ public class DataService {
 
     private static final Logger logger = LoggerFactory.getLogger(DataService.class);
 
-    private List<Integer> guestPrices;
+    private List<Double> guestPrices;
 
     @PostConstruct
     public void readPrices() {
@@ -28,12 +29,12 @@ public class DataService {
             var data = mapper.readValue(new File(GUEST_PRICES_FILE), GuestData.class);
             this.guestPrices = data.getGuestPrices();
         } catch (IOException ex) {
-            logger.error("Error reading guest data");
+            logger.error(ERR_DATA_READ);
             throw new OccupancyException(ex.getMessage());
         }
     }
 
-    public List<Integer> getGuestPrices() {
+    public List<Double> getGuestPrices() {
         return guestPrices;
     }
 }
