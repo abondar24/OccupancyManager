@@ -57,7 +57,10 @@ public class OccupancyService {
             economyUsage = calculateBasicOccupancy(economyPrices,economyRooms);
         }
 
-        return new Occupancy(premiumUsage,economyUsage);
+        var occ = new Occupancy();
+        occ.setPremiumData(premiumUsage);
+        occ.setEconomyData(economyUsage);
+        return occ;
     }
 
     public List<List<Double>> splitPrices(List<Double> guestPrices) {
