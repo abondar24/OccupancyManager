@@ -1,12 +1,13 @@
 package org.abondar.industrial.occupancy.service;
 
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,16 +59,16 @@ public class OccupancyServiceTest {
 
         var occupancyUsage = occupancyService.calculateBasicOccupancy(prices, 3);
         assertEquals(3, occupancyUsage.getRooms());
-        assertEquals(738, occupancyUsage.getPrice());
+        assertEquals(BigDecimal.valueOf(738), occupancyUsage.getPrice());
 
 
         occupancyUsage = occupancyService.calculateBasicOccupancy(prices, 7);
         assertEquals(6, occupancyUsage.getRooms());
-        assertEquals(1054, occupancyUsage.getPrice());
+        assertEquals(BigDecimal.valueOf(1054), occupancyUsage.getPrice());
 
         occupancyUsage = occupancyService.calculateBasicOccupancy(prices, 2);
         assertEquals(2, occupancyUsage.getRooms());
-        assertEquals(583, occupancyUsage.getPrice());
+        assertEquals(BigDecimal.valueOf(583), occupancyUsage.getPrice());
     }
 
 
@@ -77,11 +78,11 @@ public class OccupancyServiceTest {
 
         var premium = occupancy.getPremiumData();
         assertEquals(3, premium.getRooms());
-        assertEquals(738, premium.getPrice());
+        assertEquals(BigDecimal.valueOf(738), premium.getPrice());
 
         var economy = occupancy.getEconomyData();
         assertEquals(3, economy.getRooms());
-        assertEquals(167.99, economy.getPrice());
+        assertEquals(BigDecimal.valueOf(167.99), economy.getPrice());
     }
 
 
@@ -91,11 +92,11 @@ public class OccupancyServiceTest {
 
         var premium = occupancy.getPremiumData();
         assertEquals(6, premium.getRooms());
-        assertEquals(1054, premium.getPrice());
+        assertEquals(BigDecimal.valueOf(1054), premium.getPrice());
 
         var economy = occupancy.getEconomyData();
         assertEquals(4, economy.getRooms());
-        assertEquals(189.99, economy.getPrice());
+        assertEquals(BigDecimal.valueOf(189.99), economy.getPrice());
 
     }
 
@@ -105,11 +106,11 @@ public class OccupancyServiceTest {
         var occupancy = occupancyService.calculateOccupancy(2, 7);
         var premium = occupancy.getPremiumData();
         assertEquals(2, premium.getRooms());
-        assertEquals(583, premium.getPrice());
+        assertEquals(BigDecimal.valueOf(583), premium.getPrice());
 
         var economy = occupancy.getEconomyData();
         assertEquals(4, economy.getRooms());
-        assertEquals(189.99, economy.getPrice());
+        assertEquals(BigDecimal.valueOf(189.99), economy.getPrice());
     }
 
     @Test
@@ -117,10 +118,10 @@ public class OccupancyServiceTest {
         var occupancy = occupancyService.calculateOccupancy(7, 1);
         var premium = occupancy.getPremiumData();
         assertEquals(7, premium.getRooms());
-        assertEquals(1153.99, premium.getPrice());
+        assertEquals(BigDecimal.valueOf(1153.99), premium.getPrice());
 
         var economy = occupancy.getEconomyData();
         assertEquals(1, economy.getRooms());
-        assertEquals(45, economy.getPrice());
+        assertEquals(BigDecimal.valueOf(45), economy.getPrice());
     }
 }

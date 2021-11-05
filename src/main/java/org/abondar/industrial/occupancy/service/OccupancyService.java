@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public class OccupancyService {
         if (premiumLeftover > 0 && economyShortage) {
             var upgradedEconomy = economyPrices.subList(0, premiumLeftover);
             var upgradedUsage = calculateBasicOccupancy(upgradedEconomy, premiumLeftover);
-            premiumUsage.setPrice(premiumUsage.getPrice() + upgradedUsage.getPrice());
+            premiumUsage.setPrice(premiumUsage.getPrice().add(upgradedUsage.getPrice()));
             premiumUsage.setRooms(premiumUsage.getRooms() + upgradedUsage.getRooms());
 
             var leftEconomy = economyPrices.subList(premiumLeftover, economyPrices.size());
@@ -89,7 +90,7 @@ public class OccupancyService {
                 .sum();
 
         occupancyUsage.setRooms(roomLimit);
-        occupancyUsage.setPrice(price);
+        occupancyUsage.setPrice(BigDecimal.valueOf(price).stripTrailingZeros());
         return occupancyUsage;
     }
 }
