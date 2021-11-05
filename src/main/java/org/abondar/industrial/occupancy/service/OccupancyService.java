@@ -1,7 +1,8 @@
 package org.abondar.industrial.occupancy.service;
 
+import org.abondar.industrial.occupancy.data.BasicOccupancy;
 import org.abondar.industrial.occupancy.data.Occupancy;
-import org.abondar.industrial.occupancy.data.OccupancyUsage;
+import org.abondar.industrial.occupancy.data.OccupancyData;
 import org.abondar.industrial.occupancy.exception.OccupancyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,29 +40,53 @@ public class OccupancyService {
         var premiumPrices = prices.get(0);
         var economyPrices = prices.get(1);
 
-        var premiumUsage = calculateBasicOccupancy(premiumPrices, premiumRooms);
-        OccupancyUsage economyUsage;
+        var premiumOccupancy = calculateBasicOccupancy(premiumPrices, premiumRooms);
+        BasicOccupancy economyOccupancy;
+        BasicOccupancy upgradeOccupancy=null;
 
-        var premiumLeftover = premiumRooms - premiumUsage.getRooms();
+        var premiumLeftover = premiumRooms - premiumOccupancy.getRooms();
         var economyShortage = economyPrices.size() > economyRooms;
 
         if (premiumLeftover > 0 && economyShortage) {
             var upgradedEconomy = economyPrices.subList(0, premiumLeftover);
-            var upgradedUsage = calculateBasicOccupancy(upgradedEconomy, premiumLeftover);
-            premiumUsage.setPrice(premiumUsage.getPrice().add(upgradedUsage.getPrice()));
-            premiumUsage.setRooms(premiumUsage.getRooms() + upgradedUsage.getRooms());
+            upgradeOccupancy = calculateBasicOccupancy(upgradedEconomy, premiumLeftover);
 
             var leftEconomy = economyPrices.subList(premiumLeftover, economyPrices.size());
-            economyUsage = calculateBasicOccupancy(leftEconomy, economyRooms);
+            economyOccupancy = calculateBasicOccupancy(leftEconomy, economyRooms);
 
         } else {
-            economyUsage = calculateBasicOccupancy(economyPrices, economyRooms);
+            economyOccupancy = calculateBasicOccupancy(economyPrices, economyRooms);
         }
 
+        return buildOccupancy(premiumOccupancy,economyOccupancy,upgradeOccupancy);
+    }
+
+    private Occupancy buildOccupancy(BasicOccupancy premium, BasicOccupancy economy, BasicOccupancy upgrade){
         var occ = new Occupancy();
-        occ.setPremiumData(premiumUsage);
-        occ.setEconomyData(economyUsage);
+
+        var economyOccupancyData = new OccupancyData();
+        economyOccupancyData.setRooms(economy.getRooms());
+        economyOccupancyData.setPrice(convertPrice(economy.getPrice()));
+
+        occ.setEconomyData(economyOccupancyData);
+
+        var premiumOccupancyData = new OccupancyData();
+        if (upgrade!=null){
+            var price = premium.getPrice()+ upgrade.getPrice();
+            premiumOccupancyData.setPrice(convertPrice(price));
+            premiumOccupancyData.setRooms(upgrade.getRooms()+ premium.getRooms());
+        } else {
+            premiumOccupancyData.setPrice(convertPrice(premium.getPrice()));
+            premiumOccupancyData.setRooms(premium.getRooms());
+        }
+
+        occ.setPremiumData(premiumOccupancyData);
+
         return occ;
+    }
+
+    private BigDecimal convertPrice(Double price){
+        return BigDecimal.valueOf(price).stripTrailingZeros();
     }
 
     public List<List<Double>> splitPrices(List<Double> guestPrices) {
@@ -79,8 +104,7 @@ public class OccupancyService {
 
     }
 
-    public OccupancyUsage calculateBasicOccupancy(List<Double> prices, int rooms) {
-        var occupancyUsage = new OccupancyUsage();
+    public BasicOccupancy calculateBasicOccupancy(List<Double> prices, int rooms) {
 
 
         var roomLimit = Math.min(rooms, prices.size());
@@ -89,8 +113,7 @@ public class OccupancyService {
                 .mapToDouble(Double::doubleValue)
                 .sum();
 
-        occupancyUsage.setRooms(roomLimit);
-        occupancyUsage.setPrice(BigDecimal.valueOf(price).stripTrailingZeros());
-        return occupancyUsage;
+
+        return new BasicOccupancy(roomLimit,price);
     }
 }

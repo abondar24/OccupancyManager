@@ -1,15 +1,14 @@
 package org.abondar.industrial.occupancy.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 public class Occupancy {
 
     @JsonProperty("premium")
-    private OccupancyUsage premiumData;
+    private OccupancyData premiumData;
 
     @JsonProperty("economy")
-    private OccupancyUsage economyData;
+    private OccupancyData economyData;
 }
