@@ -27,7 +27,9 @@ public class OccupancyControllerTest {
     @Test
     public void testGetOccupancy() throws Exception {
 
-        mockMvc.perform(get("/occupancy/{premiumRooms}/{economyRooms}", 3, 3)
+        mockMvc.perform(get("/occupancy")
+                        .queryParam("premium","3")
+                        .queryParam("economy","3")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -45,7 +47,9 @@ public class OccupancyControllerTest {
     @Test
     public void testOccupancyNegativeRooms() throws Exception {
 
-        mockMvc.perform(get("/occupancy/{premiumRooms}/{economyRooms}", -3, 3)
+        mockMvc.perform(get("/occupancy")
+                        .queryParam("premium","-3")
+                        .queryParam("economy","3")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -57,7 +61,9 @@ public class OccupancyControllerTest {
     @Test
     public void testOccupancyNoNumberRooms() throws Exception {
 
-        mockMvc.perform(get("/occupancy/{premiumRooms}/{economyRooms}", "test", 3)
+        mockMvc.perform(get("/occupancy")
+                        .queryParam("premium","test")
+                        .queryParam("economy","3")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))

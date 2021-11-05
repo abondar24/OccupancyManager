@@ -10,7 +10,7 @@ import java.io.IOException;
 public class OccupancyExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({OccupancyException.class})
     public void handleBadRequest(Exception ex, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_GATEWAY.value(), ex.getMessage());
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     }
 
 }

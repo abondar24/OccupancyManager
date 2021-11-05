@@ -4,7 +4,7 @@ Hotel room occupancy manager.
 
 ## API
 ```yaml
-http://localhost:8080/occupancy/{premiumRooms}/{economyRooms} - fetch occupancy usage calculations
+http://localhost:8080/occupancy?premium={premiumRooms}&economy={economyRooms} - fetch occupancy usage calculations
 
 Response:
   200 - occupancy usage

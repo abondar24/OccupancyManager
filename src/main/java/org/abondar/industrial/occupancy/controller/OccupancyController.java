@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Min;
@@ -28,9 +29,9 @@ public class OccupancyController {
         this.service = service;
     }
 
-    @GetMapping(path = OCCUPANCY_ROOMS, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Occupancy> showOccupancy(@PathVariable @Min(0) int premiumRooms,
-                                                   @PathVariable @Min(0) int economyRooms) {
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Occupancy> showOccupancy(@RequestParam(name="premium") @Min(0) int premiumRooms,
+                                                   @RequestParam(name="economy") @Min(0) int economyRooms) {
 
         var occupancy = service.calculateOccupancy(premiumRooms, economyRooms);
         return ResponseEntity.ok(occupancy);
