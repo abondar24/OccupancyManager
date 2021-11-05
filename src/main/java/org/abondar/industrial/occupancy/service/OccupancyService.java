@@ -38,23 +38,23 @@ public class OccupancyService {
         var premiumPrices = prices.get(0);
         var economyPrices = prices.get(1);
 
-        var premiumUsage = calculateBasicOccupancy(premiumPrices,premiumRooms);
-        OccupancyUsage economyUsage = null;
+        var premiumUsage = calculateBasicOccupancy(premiumPrices, premiumRooms);
+        OccupancyUsage economyUsage;
 
         var premiumLeftover = premiumRooms - premiumUsage.getRooms();
         var economyShortage = economyPrices.size() > economyRooms;
 
-        if (premiumLeftover>0 && economyShortage){
-            var upgradedEconomy = economyPrices.subList(0,premiumLeftover);
-            var upgradedUsage = calculateBasicOccupancy(upgradedEconomy,premiumLeftover);
-            premiumUsage.setPrice(premiumUsage.getPrice()+upgradedUsage.getPrice());
-            premiumUsage.setRooms(premiumUsage.getRooms()+upgradedUsage.getRooms());
+        if (premiumLeftover > 0 && economyShortage) {
+            var upgradedEconomy = economyPrices.subList(0, premiumLeftover);
+            var upgradedUsage = calculateBasicOccupancy(upgradedEconomy, premiumLeftover);
+            premiumUsage.setPrice(premiumUsage.getPrice() + upgradedUsage.getPrice());
+            premiumUsage.setRooms(premiumUsage.getRooms() + upgradedUsage.getRooms());
 
-            var leftEconomy = economyPrices.subList(premiumLeftover,economyPrices.size());
-            economyUsage = calculateBasicOccupancy(leftEconomy,economyRooms);
+            var leftEconomy = economyPrices.subList(premiumLeftover, economyPrices.size());
+            economyUsage = calculateBasicOccupancy(leftEconomy, economyRooms);
 
         } else {
-            economyUsage = calculateBasicOccupancy(economyPrices,economyRooms);
+            economyUsage = calculateBasicOccupancy(economyPrices, economyRooms);
         }
 
         var occ = new Occupancy();
